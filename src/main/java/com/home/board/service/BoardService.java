@@ -31,11 +31,9 @@ public class BoardService {
 
 
     public Board boardView(Integer id) {
-        if(boardRepository.findById(id).isPresent()) {
+
             return boardRepository.findById(id).get();
-        } else {
-            return new Board();
-        }
+
     }
     
     

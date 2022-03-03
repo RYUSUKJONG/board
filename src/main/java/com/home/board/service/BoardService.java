@@ -31,9 +31,20 @@ public class BoardService {
 
 
     public Board boardView(Integer id) {
-        return boardRepository.findById(id).get();
+        if(boardRepository.findById(id).isPresent()) {
+            return boardRepository.findById(id).get();
+        } else {
+            return new Board();
+        }
     }
+    
+    
+    //특정 게시글 삭제
+    public void boardDelete(Integer id){
 
+        boardRepository.deleteById(id);
+
+    }
 
 
 }

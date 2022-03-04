@@ -12,6 +12,7 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
@@ -24,7 +25,6 @@ public class BoardService {
     public List<Board> boardList(){
         return boardRepository.findAll();
     }
-
 
 
     public Board boardView(Integer id) {

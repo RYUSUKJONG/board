@@ -2,13 +2,16 @@ package com.home.board.controller;
 
 import com.home.board.entity.Board;
 import com.home.board.service.BoardService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
 
 @Controller
 public class BoardController {
@@ -26,8 +29,14 @@ public class BoardController {
     }
 
     @PostMapping("/board/writepro")
-    public void boardWritePro(Board board){
-        boardService.write(board);
+    public String boardWritePro(Board board, Model model, MultipartFile file) throws IOException {
+
+        boardService.write(board, file);
+
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("searchUrl", "/board/list");
+
+        return "message";
     }
 
     @GetMapping("/board/list")
@@ -64,11 +73,15 @@ public class BoardController {
 
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board){
-        Board boardTemp = boardService.boardView(id);
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, MultipartFile file) throws IOException {
 
+
+        Board boardTemp = boardService.boardView(id);
+        System.out.println(board.getTitle());
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+
+        boardService.write(boardTemp, file);
 
         return "redirect:/board/list";
     }
